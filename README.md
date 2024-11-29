@@ -1,0 +1,2 @@
+# CamMonitor_Server
+将一台电脑的摄像头作为一个监控并推送到rtmp服务器中
