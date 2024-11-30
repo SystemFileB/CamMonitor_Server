@@ -4,7 +4,6 @@
 由于还是WIP阶段，所以介绍信息并不多
 
 # 📕使用的其他开源项目
-[Nginx](https://github.com/nginx/nginx): 提供rtmp服务器
+[Nginx](https://github.com/nginx/nginx) & [Nginx-Rtmp-Module](https://github.com/arut/nginx-rtmp-module): 提供rtmp服务器
 
-
-[Nginx-Rtmp-Module]()
+[FFMpeg](https://ffmpeg.org): 推流和拉流RTMP
