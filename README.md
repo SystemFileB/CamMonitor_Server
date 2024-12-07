@@ -6,4 +6,10 @@
 # 📕 使用的其他开源项目
 [Nginx](https://github.com/nginx/nginx) & [Nginx-RTMP-Module](https://github.com/arut/nginx-rtmp-module): 提供rtmp服务器
 
-[FFMpeg](https://ffmpeg.org): 推流和拉流RTMP[README.md](../nginx-rtmp/README.md)
+[FFMpeg](https://ffmpeg.org): 推流和拉流RTMP服务器里的内容
+
+# ✅ 开发进度
+[x] 准备了相关工具  
+[ ] 完成基本服务端  
+[ ] 通过mctoast库来显示通知  
+[ ] 使用PySide6来提供一个管理界面
