@@ -160,3 +160,22 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+tools/avcodec-61.dll
+tools/avdevice-61.dll
+tools/avfilter-10.dll
+tools/avformat-61.dll
+tools/avutil-59.dll
+tools/CamMoitor_FFmpeg.exe
+tools/CamMoitor_NginX.exe
+tools/nginx/fastcgi.conf
+tools/nginx/fastcgi_params
+tools/nginx/koi-utf
+tools/nginx/koi-win
+tools/nginx/mime.types
+tools/nginx/nginx.conf
+tools/nginx/nginx.pid
+tools/nginx/scgi_params
+tools/nginx/uwsgi_params
+tools/nginx/win-utf
+tools/swresample-5.dll
+tools/swscale-8.dll
