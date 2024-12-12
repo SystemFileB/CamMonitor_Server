@@ -1,17 +1,21 @@
 {
     "configurations": [
         {
-            "name": "windows-gcc-x64",
+            "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}"
             ],
-            "compilerPath": "f:\\Program\\msys64\\usr\\bin\\g++.exe",
-            "cStandard": "${default}",
-            "cppStandard": "${default}",
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22621.0",
+            "cStandard": "gnu89",
+            "cppStandard": "gnu++98",
             "intelliSenseMode": "windows-gcc-x64",
-            "compilerArgs": [
-                "-nostdinc++"
-            ]
+            "compilerPath": "F:/Program/msys64/usr/bin/g++.exe"
         }
     ],
     "version": 4

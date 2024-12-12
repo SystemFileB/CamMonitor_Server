@@ -1,37 +1,68 @@
 #include <windows.h>
 #include <iostream>
-#include <fstream>
-//×¢£ºÕâĞ©´úÂë´ó²¿·Ö¶¼ÊÇAI¹±Ï×µÄ
+#include <array>
+#include <memory>
+#include <stdexcept>
+//æ³¨ï¼šè¿™äº›ä»£ç å¤§éƒ¨åˆ†éƒ½æ˜¯AIè´¡çŒ®çš„
 
-using namespace std; //²»ÓÃÇÃstd::ÁË£¬yay
+using namespace std; //ä¸ç”¨æ•²std::äº†ï¼Œyay
 
-// ¶¨Òåº¯ÊıÖ¸ÕëÀàĞÍ
+// å®šä¹‰å‡½æ•°æŒ‡é’ˆç±»å‹
 typedef void (*Py_Initialize_t)();
 typedef void (*Py_Finalize_t)();
 typedef int (*PyRun_SimpleString_t)(const char *);
 
+std::string getPythonDllName() {
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("python -V 2>&1", "r"), pclose);
+    
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+    
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    
+    // æŸ¥æ‰¾"Python "å­—ç¬¦ä¸²ï¼Œå¹¶æå–ç‰ˆæœ¬å·
+    size_t pos = result.find("Python ");
+    if (pos == std::string::npos) {
+        throw std::runtime_error("Could not determine Python version!");
+    }
+    
+    // æå–ç‰ˆæœ¬å·çš„å‰ä¸‰ä¸ªå­—ç¬¦ï¼ˆä¾‹å¦‚"3.9"æˆ–"3.1"ï¼‰
+    std::string version = result.substr(pos + 7, 4);
+    
+    // æ›¿æ¢ç‰ˆæœ¬å·ä¸­çš„"."ä¸º""ï¼Œå¹¶æ·»åŠ "python"å‰ç¼€å’Œ".dll"åç¼€
+    std::string dllName = "python" + version.replace(1, 1, "") + ".dll";
+    
+    return dllName;
+}
 int main(int argc,char *argv[]) {
-	// ¼ÓÔØ python311.dll
-	HMODULE hPythonDll = LoadLibrary("python311.dll");
+	// è·å¾—python3*.dllæ–‡ä»¶å
+    string pythonPath=getPythonDllName();
+    // åŠ è½½ python311.dll
+    HMODULE hPythonDll=LoadLibrary(pythonPath.c_str());
 	if (!hPythonDll) {
-        std::cerr << "ÎŞ·¨Ö´ĞĞÆô¶¯³ÌĞò£¬¿ÉÄÜÊÇÒòÎªÃ»ÓĞ°²×°Python£¬³¢ÊÔĞŞ¸´. . ." << std::endl;
+        std::cerr << "æ— æ³•æ‰§è¡Œå¯åŠ¨ç¨‹åºï¼Œå¯èƒ½æ˜¯å› ä¸ºæ²¡æœ‰å®‰è£…Pythonï¼Œå°è¯•ä¿®å¤. . ." << std::endl;
         return 1;
-    } else {
-    // »ñÈ¡º¯ÊıµØÖ·
+    }
+    // è·å–å‡½æ•°åœ°å€
     Py_Initialize_t Py_Initialize = (Py_Initialize_t)GetProcAddress(hPythonDll, "Py_Initialize");
     Py_Finalize_t Py_Finalize = (Py_Finalize_t)GetProcAddress(hPythonDll, "Py_Finalize");
     PyRun_SimpleString_t PyRun_SimpleString = (PyRun_SimpleString_t)GetProcAddress(hPythonDll, "PyRun_SimpleString");
-    if (!Py_Initialize || !Py_Finalize || !PyRun_SimpleString) {
-        std::cerr << "ÎŞ·¨»ñÈ¡º¯ÊıÎ»ÖÃ£¬¿ÉÄÜÊÇ°æ±¾ÓĞ±ä¶¯. . ." << std::endl;
+    if (!Py_Finalize || !PyRun_SimpleString) {
+        std::cerr << "æ— æ³•è·å–å‡½æ•°ä½ç½®ï¼Œå¯èƒ½æ˜¯ç‰ˆæœ¬æœ‰å˜åŠ¨. . ." << std::endl;
         FreeLibrary(hPythonDll);
 
         return 1;
     }
 
-    // ³õÊ¼»¯ Python ½âÊÍÆ÷
+    // åˆå§‹åŒ– Python è§£é‡Šå™¨
     Py_Initialize();
 
-    // Ö´ĞĞ Python ´úÂë
+    // æ‰§è¡Œ Python ä»£ç 
 	string pythonCode="import launcher;launcher.main(";
 	for(int i=1;i<argc;i++) {
 		pythonCode+='"';
@@ -41,16 +72,12 @@ int main(int argc,char *argv[]) {
 	}
 	pythonCode+=")";
     int result = PyRun_SimpleString(pythonCode.c_str());
-    if (result != 0) {
-        std::cerr << "ÎŞ·¨Ö´ĞĞÆô¶¯ÃüÁî" << std::endl;
-    }
 
-    // ÖÕÖ¹ Python ½âÊÍÆ÷
+    // ç»ˆæ­¢ Python è§£é‡Šå™¨
     Py_Finalize();
 
-    // ÊÍ·Å DLL
+    // é‡Šæ”¾ DLL
     FreeLibrary(hPythonDll);
-	}
 
     return 0;
 }

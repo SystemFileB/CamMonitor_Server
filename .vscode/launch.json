@@ -1,24 +1,20 @@
 {
-    "version": "2.0.0",
-    "tasks": [
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
         {
-            "label": "build C++ with Python",
-            "type": "shell",
-            "command": "cl",
-            "args": [
-                "/I", "C:\\Path\\To\\Python\\include", // Python 头文件的路径
-                "/link",
-                "/LIBPATH:C:\\Path\\To\\Python\\libs", // Python 库文件的路径
-                "your_program.cpp", // 你的 C++ 源文件
-                "/Fe:your_program.exe", // 输出文件的名称
-                "python39.lib" // 链接的 Python 库（根据你的 Python 版本调整）
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": ["$gcc"],
-            "detail": "Task to build C++ program using cl compiler and link with Python library."
+            "name": "原神，启动",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "preLaunchTask":"C/C++: g++.exe 生成活动文件"
         }
+        
     ]
 }
