@@ -1,0 +1,31 @@
+#include <windows.h>
+#include <winver.h>
+
+// 定义图标资源
+IDI_ICON1 ICON "assets\\camo_serv\\icon.ico"
+
+// 定义版本信息
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION 1,0,0,0
+PRODUCTVERSION 1,0,0,0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "SystemFileB"
+            VALUE "FileDescription", "CamMoitor_Server"
+            VALUE "FileVersion", "1.00.2025.0103"
+            VALUE "InternalName", "CamMoitor_Server"
+            VALUE "LegalCopyright", "Copyleft (C) 2025 SystemFileB 使用LGPLv3许可证"
+            VALUE "OriginalFilename", "CamMoitor_Server.exe"
+            VALUE "ProductName", "CamMoitor_Server"
+            VALUE "ProductVersion", "1.00.2025.0103"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        // 让我们说中文
+        VALUE "Translation", 0x804, 1200
+    END
+END

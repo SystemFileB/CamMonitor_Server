@@ -11,7 +11,9 @@
 				"${file}",
 				"-Os",
 				"-o",
-				"${fileDirname}\\${fileBasenameNoExtension}.exe"
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"${fileDirname}\\CamMoitor_Server.o",
+				"-mwindows"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
@@ -22,8 +24,7 @@
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			},
-			"detail": "编译器: F:\\Program\\msys64\\usr\\bin\\g++.exe"
+			}
 		}
 	]
 }

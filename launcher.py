@@ -1,3 +1,3 @@
-import sys
+import os
 def main(*args):
-	print(args)
+	os.system("start cmd")
