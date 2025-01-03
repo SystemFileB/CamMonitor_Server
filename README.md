@@ -1,6 +1,6 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://s21.ax1x.com/2025/01/03/pEpNP6P.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://s21.ax1x.com/2025/01/03/pEpNClt.png">
+  <source media="(prefers-color-scheme: dark)" srcset="./banner_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./banner_light.png">
   <img alt="CamMoitor_Server Banner">
 </picture>
 
