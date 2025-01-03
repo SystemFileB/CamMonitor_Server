@@ -1,4 +1,10 @@
-# 📹 CamMonitor_Server (WIP)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./banner_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./banner_light.png">
+  <img alt="NGINX Banner">
+</picture>
+
+---
 一个项目，可以把摄像头当作监控来使用
 
 由于还是WIP阶段，所以介绍信息并不多
@@ -9,10 +15,8 @@
 [FFMpeg](https://ffmpeg.org): 推流和拉流RTMP服务器里的内容
 
 # ✅ 开发进度
-| 完成情况 | 目标                |
-|:----:|-------------------|
-|  ✔️  | 准备相关工具            |  
-|  ✔️  | 使用C++写一个启动程序            |  
-|      | 完成基本服务端           |  
-|      | 通过mctoast库来显示通知   |  
-|      | 使用PySide6来提供一个管理界面 |  
+- [x] 准备相关工具
+- [x] 使用C++写一个启动程序
+- [ ] 完成基本服务端
+- [ ] 通过mctoast库来显示通知
+- [ ] 写一个网页显示管理界面

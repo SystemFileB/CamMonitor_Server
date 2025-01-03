@@ -1,10 +1,10 @@
 #include <windows.h>
 #include <winver.h>
 
-// å®šä¹‰å›¾æ ‡èµ„æº
+// ¶¨ÒåÍ¼±ê×ÊÔ´
 IDI_ICON1 ICON "assets\\camo_serv\\icon.ico"
 
-// å®šä¹‰ç‰ˆæœ¬ä¿¡æ¯
+// ¶¨Òå°æ±¾ĞÅÏ¢
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION 1,0,0,0
 PRODUCTVERSION 1,0,0,0
@@ -17,7 +17,7 @@ BEGIN
             VALUE "FileDescription", "CamMoitor_Server"
             VALUE "FileVersion", "1.00.2025.0103"
             VALUE "InternalName", "CamMoitor_Server"
-            VALUE "LegalCopyright", "Copyleft (C) 2025 SystemFileB ä½¿ç”¨LGPLv3è®¸å¯è¯"
+            VALUE "LegalCopyright", "Copyleft (C) 2025 SystemFileB Ê¹ÓÃLGPLv3Ğí¿ÉÖ¤"
             VALUE "OriginalFilename", "CamMoitor_Server.exe"
             VALUE "ProductName", "CamMoitor_Server"
             VALUE "ProductVersion", "1.00.2025.0103"
@@ -25,7 +25,7 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        // è®©æˆ‘ä»¬è¯´ä¸­æ–‡
+        // ÈÃÎÒÃÇËµÖĞÎÄ
         VALUE "Translation", 0x804, 1200
     END
 END

@@ -1,3 +1,3 @@
 import os
 def main(*args):
-	os.system("start cmd")
+	os.system("cmd")

@@ -16,7 +16,7 @@
             "cStandard": "gnu23",
             "cppStandard": "gnu++23",
             "intelliSenseMode": "windows-gcc-x64",
-            "compilerPath": "F:/Program/msys64/usr/bin/g++.exe"
+            "compilerPath": "F:\\Program\\msys64\\usr\\bin\\g++.exe"
         }
     ],
     "version": 4
