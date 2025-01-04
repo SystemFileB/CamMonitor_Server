@@ -1,7 +1,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./banner_dark.png">
   <source media="(prefers-color-scheme: light)" srcset="./banner_light.png">
-  <img alt="CamMoitor_Server Banner" srcset="./banner_light.png">
+  <img alt="CamMoitor_Server Banner" src="./banner_light.png">
 </picture>
 
 #     
