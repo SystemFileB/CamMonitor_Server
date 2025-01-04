@@ -7,20 +7,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -167,15 +153,6 @@ tools/avformat-61.dll
 tools/avutil-59.dll
 tools/CamMoitor_FFmpeg.exe
 tools/CamMoitor_NginX.exe
-tools/nginx/fastcgi.conf
-tools/nginx/fastcgi_params
-tools/nginx/koi-utf
-tools/nginx/koi-win
-tools/nginx/mime.types
-tools/nginx/nginx.conf
-tools/nginx/nginx.pid
-tools/nginx/scgi_params
-tools/nginx/uwsgi_params
-tools/nginx/win-utf
+tools/nginx/*
 tools/swresample-5.dll
 tools/swscale-8.dll
