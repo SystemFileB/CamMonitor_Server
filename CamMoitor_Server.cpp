@@ -1,12 +1,11 @@
 #include <windows.h>
 #include <iostream>
 #include <fstream>
-#include <json.hpp>
-#include <string>
+#include <memory>
+#include <array>
 //注：这些代码大部分都是AI贡献的
 
 using namespace std; //不用敲了，yay
-using json = nlohmann::json;
 
 // 定义函数指针类型
 typedef void (*Py_Initialize_t)();
@@ -44,23 +43,19 @@ string getPythonDllName() {
     return dllName;
 }
 
-string getPythonFromJson() {
+string getPythonFromTxt() {
     string pythonPath;
-    ifstream jsonFile("config/python_launcher.json");
-    if (jsonFile.is_open()) {
-        json config;
-        jsonFile >> config;
-        jsonFile.close();
-        pythonPath = config["python-path"];
+    ifstream txtFile("config/python_launcher.txt");
+    if (txtFile.is_open()) {
+        getline(txtFile, pythonPath);
+        txtFile.close();
     }
 
     if (pythonPath.empty()) {
         pythonPath = getPythonDllName();
-        json config;
-        config["python-path"] = pythonPath;
-        ofstream outFile("config/python_launcher.json");
+        ofstream outFile("config/python_launcher.txt");
         if (outFile.is_open()) {
-            outFile << config.dump(2);
+            outFile << pythonPath;
             outFile.close();
         }
     }
@@ -68,9 +63,15 @@ string getPythonFromJson() {
     return pythonPath;
 }
 
-int main(int argc,char *argv[]) {
-	// 获得python3*.dll文件名
-    string pythonPath=getPythonFromJson();
+int main(int argc, char *argv[]) {
+    // 重定向标准输出到控制台
+    if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONOUT$", "w", stderr);
+    }
+
+    // 获得python3*.dll文件名
+    string pythonPath = getPythonFromTxt();
     // 加载 python311.dll
     HMODULE hPythonDll=LoadLibrary(pythonPath.c_str());
 	if (!hPythonDll) {

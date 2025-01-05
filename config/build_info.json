@@ -1,0 +1,6 @@
+{
+    "ffmpeg": "tools",
+    "nginx": "tools/CamMoitor_NginX",
+    "cmdinfo": "tools/cmdinfo",
+    "version": "1.00.0"
+}

@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "原神，启动",
+            "name": "原神，启动 (启动器运行)",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
@@ -14,7 +14,24 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "preLaunchTask":"C/C++: g++.exe 生成活动文件"
+        },
+        {
+            "name": "原神，启动 (Python文件运行)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasename}",
+            "args": [],
+            "cwd": "${fileDirname}",
+        },
+        {
+            "name": "原神，启动 (运行启动器而不编译)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/CamMoitor_Server.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": []
         }
-        
     ]
 }
