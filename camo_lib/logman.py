@@ -6,33 +6,32 @@ from colorama import Fore,Style,init,Back
 import os
 from . import configs
 from datetime import datetime
+import glob
+import time
 init()
 set_runPath=configs.set_runPath
+latestlog=""
 
 # 初始化日志类型常量
 INFO=0
 WARN=1
 ERROR=2
+DEBUG=3
 
 def init_logman():
     """载入日志文件并初始化一些变量"""
-    global set_runPath
-    set_runPath=configs.set_runPath
-    if os.path.exists(set_runPath+"/logs/latestlog.txt"):
-        for i in range(1,11):
-            oldlogdel=True
-            if not os.path.exists(set_runPath+"/logs/oldlog_{}.txt".format(i)):
-                oldlogdel=False
-                break
 
-        if oldlogdel:
-            os.remove(set_runPath+"/logs/oldlog_10.txt")
-        os.rename(set_runPath+"/logs/latestlog.txt",set_runPath+"/logs/oldlog_{}.txt".format(i))
+    global set_runPath,latestlog
+    set_runPath = configs.set_runPath
 
-    with open(set_runPath+"/logs/latestlog.txt","w",encoding="utf-8") as f:
+    # 获取当前时间并格式化
+    now = datetime.now()
+    latestlog = set_runPath + "/logs/" + f"log_{now.strftime('%Y%m%d_%H%M%S')}.txt"
+
+    # 创建新的日志文件
+    with open(latestlog, "w", encoding="utf-8") as f:
         # 往日志写入时间
-        now=datetime.now()
-        f.write("==========日志时间：{:04d}/{:02d}/{:02d} {:02d}:{:02d}:{:02d}==========\n".format(now.year,now.month,now.day,now.hour,now.minute,now.second))
+        f.write("==========日志时间：{:04d}/{:02d}/{:02d} {:02d}:{:02d}:{:02d}==========\n".format(now.year, now.month, now.day, now.hour, now.minute, now.second))
         f.close()
 
     #让traceback写到日志里
@@ -60,16 +59,52 @@ def write_log(text:str,color:str=Fore.WHITE,type:int=INFO,print_no_head=False):
     elif type==ERROR:
         type_t=Fore.RED+"ERROR"+Style.RESET_ALL
         type_l="ERROR"
+    elif type==DEBUG:
+        if configs.logman_debugout==False:
+            return
+        type_t=Fore.LIGHTBLACK_EX+"DEBUG"+Style.RESET_ALL
+        type_l="DEBUG"
 
-    head="[{:04d}/{:02d}/{:02d} {:02d}:{:02d}:{:02d}] ".format(now.year,now.month,now.day,now.hour,now.minute,now.second) #初始头
+    head="[{}] ".format(datetime.strftime(now,configs.logmancfg["timeformat"])) #初始头
 
-    with open(set_runPath+"/logs/latestlog.txt","a",encoding="utf-8") as f: #输出
+    with open(latestlog,"a",encoding="utf-8") as f: #输出
         f.write(head+"[{}] ".format(type_l)+text+"\n")
         f.close()
     if print_no_head:
         print(color+text+Style.RESET_ALL)
     else:
         print(head+"[{}]".format(str(type_t)),color+text+Style.RESET_ALL)
+
+def del_oldlog():
+    """删旧日志"""
+    # 获取当前日期
+    from datetime import date
+    import datetime as datet
+    today = date.today()
+    # 计算删除日期
+    del_date = today - datet.timedelta(days=configs.logmancfg["deldays"])
+    
+    # 遍历日志文件
+    log_files = glob.glob(set_runPath + "/logs/log_*.txt")
+    log_dates = []
+    
+    for log_file in log_files:
+        # 从文件名中提取日期
+        file_date_str = log_file.split("_")[1].split(".")[0]
+        # 使用指定的时间格式解析日期
+        file_date = datet.datetime.strptime(file_date_str, '%Y%m%d').date()
+        log_dates.append(file_date)
+    
+    # 去重
+    unique_dates = set(log_dates)
+    
+    # 检查日志日期
+    if len(unique_dates) > configs.logmancfg["deldays"]:
+        oldest_date = min(unique_dates)
+        for log_file, file_date in zip(log_files, log_dates):
+            if file_date == oldest_date:
+                write_log("已删除{}，死因：超过{}天".format(log_file, configs.logmancfg["deldays"]), type=WARN)
+                os.remove(log_file)
 
 def log_exception(exc_type, exc_value, exc_traceback):
     """

@@ -1,0 +1,8 @@
+{
+  "desc1": "这是logman的配置文件，你也可以使用图形界面来管理",
+  "desc2": "    timeformat    日志的时间格式(strftime)，想详细点可以使用%Y/%m/%d %H:%M:%S，默认%H:%M:%S",
+  "desc3": "    deldays       保留几天日志，默认为7",
+  
+  "timeformat": "%H:%M:%S",
+  "deldays": 7
+}

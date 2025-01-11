@@ -167,3 +167,6 @@ tools/swresample-5.dll
 tools/swscale-8.dll
 
 logs/*
+
+CamMoitor_Server.exe
+*.exe

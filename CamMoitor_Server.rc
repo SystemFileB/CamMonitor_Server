@@ -15,12 +15,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "SystemFileB"
             VALUE "FileDescription", "CamMoitor_Server"
-            VALUE "FileVersion", "1.00.2025.0103"
+            VALUE "FileVersion", "1.00.2025.0107"
             VALUE "InternalName", "CamMoitor_Server"
-            VALUE "LegalCopyright", "Copyleft (C) 2025 SystemFileB 使用LGPLv3许可证"
+            VALUE "LegalCopyright", "(C) 2025 SystemFileB Under LGPLv3"
             VALUE "OriginalFilename", "CamMoitor_Server.exe"
             VALUE "ProductName", "CamMoitor_Server"
-            VALUE "ProductVersion", "1.00.2025.0103"
+            VALUE "ProductVersion", "1.00.2025.0107"
         END
     END
     BLOCK "VarFileInfo"
