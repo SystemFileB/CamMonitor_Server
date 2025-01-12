@@ -1,10 +1,10 @@
 {
     "desc0": "CamMoitor_Server的构建配置，用于跨平台",
-    "desc1": "ffmpeg   ffmpeg dll路径",
-    "desc2": "nginx    nginx执行路径",
+    "desc1": "ffmpeg        ffmpeg dll路径",
+    "desc2": "nginx         nginx执行路径",
     "desc3": "nginx_prefix  nginx执行路径，如果是windows端，填 tools，否则填 /",
-    "desc4": "cmdinfo  cmdinfo执行路径，用于无法显示图形界面时显示错误",
-    "desc5": "version  版本",
+    "desc4": "cmdinfo       cmdinfo执行路径，用于无法显示图形界面时显示错误",
+    "desc5": "version       版本",
 
     "ffmpeg": "tools",
     "nginx": "tools/CamMoitor_NginX",
