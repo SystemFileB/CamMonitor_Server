@@ -151,7 +151,6 @@ tools/avdevice-61.dll
 tools/avfilter-10.dll
 tools/avformat-61.dll
 tools/avutil-59.dll
-tools/CamMoitor_NginX.exe
 
 tools/nginx/!fastcgi.conf
 tools/nginx/!fastcgi_params
@@ -169,4 +168,3 @@ tools/swscale-8.dll
 logs/*
 
 CamMoitor_Server.exe
-*.exe

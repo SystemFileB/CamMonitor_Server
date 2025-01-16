@@ -38,7 +38,7 @@ def init_logman():
     import sys
     sys.excepthook = log_exception
 
-def write_log(text:str,color:str=Fore.WHITE,type:int=INFO,print_no_head=False):
+def write_log(text:str,color:str=Fore.RESET,type:int=INFO,print_no_head=False,heads=(),heads_file=()):
     """
     打日志
     
@@ -47,33 +47,44 @@ def write_log(text:str,color:str=Fore.WHITE,type:int=INFO,print_no_head=False):
         color 颜色和样式，使用logman.Fore,logman.Style和logman.Back里的定义，默认logman.Fore.WHITE
         type 日志类型，默认logman.INFO
         print_no_head 不输出时间和类型
+        *args 在 [时间] [日志类型] 两个头后面加上其他的内容
     """
     global set_runPath
     now=datetime.now() #初始日志类型
+    head_file="" #日志文件头
+    head=""      #输出日志头
+
+    head_file+="[{}] [".format(datetime.strftime(now,configs.logmancfg["timeformat"])) #时间头
+    head+="[{}] [".format(datetime.strftime(now,configs.logmancfg["timeformat"]))
+
     if type==INFO:
-        type_t=Fore.CYAN+"INFO"+Style.RESET_ALL
-        type_l="INFO"
+        head+=Fore.CYAN+"INFO"+Style.RESET_ALL
+        head_file+="INFO"
     elif type==WARN:
-        type_t=Fore.YELLOW+"WARN"+Style.RESET_ALL
-        type_l="WARN"
+        head+=Fore.YELLOW+"WARN"+Style.RESET_ALL
+        head_file="WARN"
     elif type==ERROR:
-        type_t=Fore.RED+"ERROR"+Style.RESET_ALL
-        type_l="ERROR"
+        head+=Fore.RED+"ERROR"+Style.RESET_ALL
+        head_file+="ERROR"
     elif type==DEBUG:
         if configs.logman_debugout==False:
             return
-        type_t=Fore.LIGHTBLACK_EX+"DEBUG"+Style.RESET_ALL
-        type_l="DEBUG"
-
-    head="[{}] ".format(datetime.strftime(now,configs.logmancfg["timeformat"])) #初始头
+        head+=Fore.LIGHTBLACK_EX+"DEBUG"+Style.RESET_ALL
+        head_file+="DEBUG"
+    head+="] "
+    head_file+="] "
+    for arg in heads:
+        head+="[{}] ".format(arg)
+    for arg in heads_file:
+        head_file+="[{}] ".format(arg)
 
     with open(latestlog,"a",encoding="utf-8") as f: #输出
-        f.write(head+"[{}] ".format(type_l)+text+"\n")
+        f.write(head_file+text+"\n")
         f.close()
     if print_no_head:
         print(color+text+Style.RESET_ALL)
     else:
-        print(head+"[{}]".format(str(type_t)),color+text+Style.RESET_ALL)
+        print(head+color+text+Style.RESET_ALL)
 
 def del_oldlog():
     """删旧日志"""

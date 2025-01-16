@@ -6,6 +6,7 @@ set_runPath=""
 set_version=""
 logman_debugout=False
 logmancfg={}
+rtmp_push_cfg={}
 inited=False
 
 def init_configs():
@@ -18,7 +19,8 @@ def init_configs():
         set_cmdinfoPath,\
         set_runPath,\
         set_version,\
-        logmancfg
+        logmancfg,\
+        rtmp_push_cfg
         import json
 
         # 编译信息
@@ -51,11 +53,11 @@ def init_configs():
         # rtmp_push配置
         try:
             with open(set_runPath+"/config/rtmp_push.json","r+",encoding="utf-8") as f:
-                logmancfg=json.load(f)
+                rtmp_push_cfg=json.load(f)
                 f.close()
         except FileNotFoundError:
             with open(set_runPath+"/config/rtmp_push.json","w",encoding="utf-8") as f:
-                logmancfg={
+                rtmp_push_cfg={
                     "desc1": "这是rtmp_push的配置文件，你也可以使用图形界面来管理",
                     "desc2": "    timeformat    推送时的水印格式(strftime)，默认使用%Y/%m/%d %H:%M:%S %A CamMoitor",
                     "desc3": "    fps           一秒推送多少帧，默认30",
@@ -74,4 +76,4 @@ def init_configs():
                     "audio": -1,
                     "audio_bitrate": 44100
                 }
-                json.dump(logmancfg,f,indent=2,ensure_ascii=False)
+                json.dump(rtmp_push_cfg,f,indent=2,ensure_ascii=False)

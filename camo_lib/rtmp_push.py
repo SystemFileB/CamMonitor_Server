@@ -3,25 +3,30 @@ import subprocess as sp
 import os
 import _thread as thread
 import av
+import cv2
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from datetime import datetime
+
 path=configs.set_runPath
 nginx_isItRuned=False
+os.environ['PATH'] = configs.set_ffmpegPath + os.pathsep + os.environ['PATH']
 
 class Nginx:
+    heads=(logman.Fore.LIGHTGREEN_EX+"NGINX"+logman.Style.RESET_ALL)
+    heads_file=("NGINX")
     def start_nginx(self):
         """启动nginx"""
-        logman.write_log("检查nginx配置. . .",logman.Fore.LIGHTGREEN_EX,logman.INFO)
-        logman.write_log("nginx执行目录: "+configs.set_nginxPathNotFull,type=logman.DEBUG)
+        logman.write_log("检查nginx配置. . .",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
+        logman.write_log("nginx执行目录: "+configs.set_nginxPathNotFull,type=logman.DEBUG,heads=self.heads,heads_file=self.heads_file)
         result=sp.run([configs.set_nginxPath,"-t","-p",configs.set_nginxPathNotFull],stderr=sp.PIPE).stderr.decode("gbk")
-        logman.write_log("nginx配置检查结果："+result,type=logman.DEBUG)
-        logman.write_log("启动nginx. . .",logman.Fore.LIGHTGREEN_EX,logman.INFO)
+        logman.write_log("nginx配置检查结果："+result,type=logman.DEBUG,heads=self.heads,heads_file=self.heads_file)
+        logman.write_log("启动nginx. . .",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
         thread.start_new_thread(self.nginx_runner,())
 
     def stop_nginx(self):
         """停止nginx"""
-        logman.write_log("停止nginx...",logman.Fore.LIGHTGREEN_EX,logman.INFO)
+        logman.write_log("停止nginx...",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
         if nginx_isItRuned:
             sp.run([configs.set_nginxPath,"-s","stop","-p",configs.set_nginxPathNotFull])
 
@@ -30,22 +35,23 @@ class Nginx:
         nginx_isItRuned=True
         ret=sp.run([configs.set_nginxPath,"-p",configs.set_nginxPathNotFull])
         if ret.returncode!=0:
-            logman.write_log("nginx退出：{}".format(ret.returncode),logman.Fore.LIGHTRED_EX,logman.ERROR)
+            logman.write_log("nginx退出：{}".format(ret.returncode),type=logman.ERROR,heads=self.heads,heads_file=self.heads_file)
         nginx_isItRuned=False
 nginx=Nginx()
-
 class FFMpeg:
-    def __init__(self, rtmp_url, camera_index=0, audio_device=-1):
-        self.rtmp_url = rtmp_url
-        self.camera_index = camera_index
-        self.audio_device = audio_device
+    heads=(logman.Fore.GREEN+"FFMPEG"+logman.Style.RESET_ALL)
+    heads_file=("NGINX")
+    def __init__(self):
+        self.rtmp_url = "rtmp://127.0.0.1:18849"
+        self.camera_index = configs.rtmp_push_cfg["camera"]
+        self.audio_device = configs.rtmp_push_cfg["audio"]
         self.capture = None
         self.output = None
         self.audio_capture = None
 
     def start(self):
         """启动摄像头捕获和RTMP推流"""
-        logman.write_log("启动摄像头捕获和RTMP推流...", logman.Fore.LIGHTGREEN_EX, logman.INFO)
+        logman.write_log("启动RTMP推流...",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
         self.capture = av.open(self.camera_index, format='dshow')  # 打开摄像头
 
         # 设置视频流参数
@@ -63,7 +69,7 @@ class FFMpeg:
 
     def stop(self):
         """停止摄像头捕获和RTMP推流"""
-        logman.write_log("停止摄像头捕获和RTMP推流...", logman.Fore.LIGHTGREEN_EX, logman.INFO)
+        logman.write_log("停止RTMP推流...", type=logman.INFO, heads=self.heads, heads_file=self.heads_file)
         if self.capture:
             self.capture.close()
         if self.output:
@@ -105,11 +111,13 @@ class FFMpeg:
     
     def getCameras(self):
         """获取摄像头设备名元组"""
-        devices = []
-        for device in av.device.DeviceInfo.list():
-            if device.name.startswith("video"):
-                devices.append(device.name)
-        return tuple(devices)
+        cameras = []
+        for i in range(10):  # 假设最多有10个摄像头
+            cap = cv2.VideoCapture(i)
+            if cap.isOpened():
+                cameras.append(f"Camera {i}")
+                cap.release()
+        return tuple(cameras)
     
     def getMics(self):
         """获取音频设备名元组"""
@@ -126,7 +134,7 @@ class FFMpeg:
 
     def switch_camera(self, camera_index):
         """切换摄像头"""
-        logman.write_log("切换摄像头...", logman.Fore.LIGHTGREEN_EX, logman.INFO)
+        logman.write_log("切换摄像头...", type=logman.INFO, heads=self.heads, heads_file=self.heads_file)
         if self.capture:
             self.capture.close()
         self.camera_index = camera_index
@@ -134,17 +142,16 @@ class FFMpeg:
     
     def switch_audio(self, audio_device):
         """切换音频设备"""
-        logman.write_log("切换音频设备...", logman.Fore.LIGHTGREEN_EX, logman.INFO)
+        logman.write_log("切换音频设备...", type=logman.INFO, heads=self.heads, heads_file=self.heads_file)
         if self.audio_capture:
             self.audio_capture.close()
         self.audio_device = audio_device
 
-    def get_supported_decoders(self):
-        """获取所有支持的解码器名"""
+    def get_encoders(self):
+        """获取所有支持的编码器名"""
         decoders = []
-        for codec in av.codec.codecs:
-            if codec.type == 'decoder':
-                decoders.append(codec.name)
+        for codec in av.codecs_available:
+            decoders.append(codec)
         return decoders
 
 ffmpeg = FFMpeg()
