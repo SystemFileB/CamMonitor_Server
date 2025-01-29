@@ -25,13 +25,9 @@ def launch(run_path,*args):
     logman.write_log("运行于：{}".format(configs.set_runPath),print_no_head=True)
     print("")
     logman.del_oldlog()
-    
-    # 启动nginx
-    for codec in rtmp_push.ffmpeg.get_encoders():
-        logman.write_log("支持的编码器：{}".format(codec),type=logman.DEBUG)
-    
-    for camera in rtmp_push.ffmpeg.getCameras():
-        logman.write_log("支持的摄像头：{}".format(camera),type=logman.DEBUG)
 
-    for mic in rtmp_push.ffmpeg.getMics():
-        logman.write_log("支持的麦克风：{}".format(mic),type=logman.DEBUG)
+    #rtmp_push.nginx.start_nginx()
+
+    logman.write_log("加载gui. . .",logman.Fore.LIGHTBLUE_EX)    
+    gui.tray.init()
+    gui.tray.mainloop()

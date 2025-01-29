@@ -2,10 +2,11 @@ from . import logman,configs
 import subprocess as sp
 import os
 import _thread as thread
-import av
-import cv2
+from ffmpeg import FFmpeg
+#import av
+#import cv2
 from PIL import Image, ImageDraw, ImageFont
-import numpy as np
+#import numpy as np
 from datetime import datetime
 
 path=configs.set_runPath
@@ -13,25 +14,27 @@ nginx_isItRuned=False
 os.environ['PATH'] = configs.set_ffmpegPath + os.pathsep + os.environ['PATH']
 
 class Nginx:
-    heads=(logman.Fore.LIGHTGREEN_EX+"NGINX"+logman.Style.RESET_ALL)
-    heads_file=("NGINX")
+    heads=(logman.Fore.LIGHTGREEN_EX+"NGINX"+logman.Style.RESET_ALL,)
+    heads_file=("NGINX",)
     def start_nginx(self):
         """启动nginx"""
         logman.write_log("检查nginx配置. . .",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
         logman.write_log("nginx执行目录: "+configs.set_nginxPathNotFull,type=logman.DEBUG,heads=self.heads,heads_file=self.heads_file)
         result=sp.run([configs.set_nginxPath,"-t","-p",configs.set_nginxPathNotFull],stderr=sp.PIPE).stderr.decode("gbk")
         logman.write_log("nginx配置检查结果："+result,type=logman.DEBUG,heads=self.heads,heads_file=self.heads_file)
+        logman.write_log("nginx配置检查返回值: "+str(result.find("test is successful")!=-1),type=logman.DEBUG,heads=self.heads,heads_file=self.heads_file)
         logman.write_log("启动nginx. . .",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
         thread.start_new_thread(self.nginx_runner,())
 
     def stop_nginx(self):
         """停止nginx"""
-        logman.write_log("停止nginx...",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
+        logman.write_log("停止nginx. . .",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)
         if nginx_isItRuned:
-            sp.run([configs.set_nginxPath,"-s","stop","-p",configs.set_nginxPathNotFull])
+            sp.run([configs.set_nginxPath,"-s","quit","-p",configs.set_nginxPathNotFull])
 
     def nginx_runner(self):
         """nginx线程"""
+        global nginx_isItRuned
         nginx_isItRuned=True
         ret=sp.run([configs.set_nginxPath,"-p",configs.set_nginxPathNotFull])
         if ret.returncode!=0:
@@ -122,6 +125,7 @@ class FFMpeg:
     def getMics(self):
         """获取音频设备名元组"""
         devices = []
+        av.de
         for device in av.device.DeviceInfo.list():
             if device.name.startswith("audio"):
                 devices.append(device.name)
@@ -154,4 +158,4 @@ class FFMpeg:
             decoders.append(codec)
         return decoders
 
-ffmpeg = FFMpeg()
+#ffmpeg = FFMpeg()

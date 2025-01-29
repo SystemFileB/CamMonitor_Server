@@ -1,0 +1,4 @@
+pillow
+pystray
+colorama
+python-ffmpeg
