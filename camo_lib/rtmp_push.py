@@ -2,7 +2,7 @@ from . import logman,configs
 import subprocess as sp
 import os
 import _thread as thread
-from ffmpeg import FFmpeg
+from ffmpeg.ffmpeg import FFmpeg
 #import av
 #import cv2
 from PIL import Image, ImageDraw, ImageFont
@@ -41,7 +41,7 @@ class Nginx:
             logman.write_log("nginx退出：{}".format(ret.returncode),type=logman.ERROR,heads=self.heads,heads_file=self.heads_file)
         nginx_isItRuned=False
 nginx=Nginx()
-class FFMpeg:
+class FFMpeg_class:
     heads=(logman.Fore.GREEN+"FFMPEG"+logman.Style.RESET_ALL)
     heads_file=("NGINX")
     def __init__(self):
@@ -51,7 +51,6 @@ class FFMpeg:
         self.capture = None
         self.output = None
         self.audio_capture = None
-
     def start(self):
         """启动摄像头捕获和RTMP推流"""
         logman.write_log("启动RTMP推流...",type=logman.INFO,heads=self.heads,heads_file=self.heads_file)

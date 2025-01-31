@@ -17,7 +17,6 @@ class Tray:
                                      pystray.MenuItem("设置", self.settings, default=True),
                                      pystray.MenuItem("退出", self.quit)
                                  ))
-        self.icon.on_left_click=self.settings
         self.write_log("OK! ")
 
     def mainloop(self):

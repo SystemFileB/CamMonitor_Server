@@ -26,8 +26,7 @@ def launch(run_path,*args):
     print("")
     logman.del_oldlog()
 
-    #rtmp_push.nginx.start_nginx()
-
-    logman.write_log("加载gui. . .",logman.Fore.LIGHTBLUE_EX)    
+    # 启动推流和GUI
+    rtmp_push.nginx.start_nginx()
     gui.tray.init()
     gui.tray.mainloop()

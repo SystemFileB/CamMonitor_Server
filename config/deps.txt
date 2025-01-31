@@ -2,3 +2,4 @@ pillow
 pystray
 colorama
 python-ffmpeg
+opencv-python
